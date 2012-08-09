@@ -2,3 +2,5 @@
 *.deb
 *.[oa]
 .theos/
+obj/
+_/

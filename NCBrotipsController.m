@@ -155,7 +155,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     _backgroundLabel.minimumFontSize = 10.0;
     _backgroundLabel.numberOfLines = 0;
     _backgroundLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:.3];
-    _backgroundLabel.text = @"Brotips™";
+    _backgroundLabel.text = @"Brotips";
     //_backgroundLabel.layer.borderColor = [UIColor redColor].CGColor;
 	//_backgroundLabel.layer.borderWidth = 1.0f;
     [_view addSubview:_backgroundLabel];
