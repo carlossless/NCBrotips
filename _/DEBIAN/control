@@ -1,0 +1,10 @@
+Package: com.mindw0rk.ncbrotips
+Name: NCBrotips
+Depends: firmware (>= 5.0), com.saurik.substrate.safemode, com.chpwn.weeloader
+Version: 0.0.1-29
+Architecture: iphoneos-arm
+Description: A Notification Center widget to get you the latest tip from the bros!
+Maintainer: Karolis Stasaitis
+Author: Karolis Stasaitis
+Section: Addons (NotificationCenter)
+Installed-Size: 32

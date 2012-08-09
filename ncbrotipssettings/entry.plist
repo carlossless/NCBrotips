@@ -1,0 +1,10 @@
+{
+    entry = {
+	bundle = WakeUpBabySettings;
+	cell = PSLinkCell;
+	detail = WakeUpBabySettingsListController;
+	icon = WakeUpBabySettings.png;
+	isController = 1;
+	label = WakeUpBabySettings;
+    };
+}
