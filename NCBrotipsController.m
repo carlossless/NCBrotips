@@ -3,6 +3,7 @@
 
 #define degreesToRadians(degrees) (M_PI * degrees / 180.0)
 #define BROKEY @"brotip"
+#define dc2fc(color) (color / 255.f)
 
 static NSBundle *_NCBrotipsWeeAppBundle = nil;
 
@@ -13,6 +14,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 	NSMutableDictionary *item;
 	NSString *currentElement;
 	NSMutableString *currentTitle, *currentLink, *currentContent;
+	NSArray *colorArray;
 	
 	UILabel *_titleLabel;
 	UILabel *_contentLabel;
@@ -62,11 +64,11 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 }
 
 - (void)parserDidStartDocument:(NSXMLParser *)parser {
-	NSLog(@"found file and started parsing");
+	NSLog(@"Started parsing brotips!");
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-	NSString * errorString = [NSString stringWithFormat:@"Unable to download story feed from web site (Error code %i )", [parseError code]];
+	NSString * errorString = [NSString stringWithFormat:@"Unable to get the latest tips! :/", [parseError code]];
 	NSLog(@"error parsing XML: %@", errorString);
 }
 
@@ -138,7 +140,21 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 	// All widgets are 316 points wide. Image size calculations match those of the Stocks widget.
 	_view = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {316.f, [self viewHeight]}}];
 	_view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	
+	colorArray = [NSArray arrayWithObjects:
+						[UIColor colorWithRed:dc2fc(176) green:dc2fc(132) blue:dc2fc(133) alpha:1],	//Pink
+						[UIColor colorWithRed:dc2fc(188) green:dc2fc(172) blue:dc2fc(153) alpha:1],	//Brown
+						[UIColor colorWithRed:dc2fc(136) green:dc2fc(175) blue:dc2fc(131) alpha:1],	//Green
+						[UIColor colorWithRed:dc2fc(132) green:dc2fc(173) blue:dc2fc(175) alpha:1],	//Blue
+						[UIColor colorWithRed:dc2fc(81) green:dc2fc(116) blue:dc2fc(86) alpha:1],	//Dark Green
+						[UIColor colorWithRed:dc2fc(116) green:dc2fc(131) blue:dc2fc(146) alpha:1],	//Purple
+						[UIColor colorWithRed:dc2fc(140) green:dc2fc(107) blue:dc2fc(74) alpha:1],	//Dark Brown
+					nil];
+	
 	item = [[NSUserDefaults standardUserDefaults] objectForKey:BROKEY];
+	currentContent = [(NSString *)[item objectForKey:@"content"] mutableCopy];
+	currentTitle = [(NSString *)[item objectForKey:@"title"] mutableCopy];
+	currentLink = [(NSString *)[item objectForKey:@"link"] mutableCopy];
 
 	UIImage *bgImg = [UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"];
 	UIImage *stretchableBgImg = [bgImg stretchableImageWithLeftCapWidth:floorf(bgImg.size.width / 2.f) topCapHeight:floorf(bgImg.size.height / 2.f)];
@@ -149,15 +165,13 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 	
 	_backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(6,4,308,137)];
     _backgroundLabel.textAlignment = UITextAlignmentCenter;
-    _backgroundLabel.backgroundColor = [UIColor colorWithRed:166.f/255 green:131.f/255 blue:132.f/255 alpha:1];
+    _backgroundLabel.backgroundColor = (UIColor *)[colorArray objectAtIndex:([currentTitle intValue] % [colorArray count])];
     _backgroundLabel.font = [UIFont boldSystemFontOfSize:70];
     _backgroundLabel.adjustsFontSizeToFitWidth = YES;
     _backgroundLabel.minimumFontSize = 10.0;
     _backgroundLabel.numberOfLines = 0;
     _backgroundLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:.3];
     _backgroundLabel.text = @"Brotips";
-    //_backgroundLabel.layer.borderColor = [UIColor redColor].CGColor;
-	//_backgroundLabel.layer.borderWidth = 1.0f;
     [_view addSubview:_backgroundLabel];
     
     _titleLabel = [[UILabel alloc] init];
@@ -166,17 +180,11 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     _titleLabel.adjustsFontSizeToFitWidth = YES;
     _titleLabel.minimumFontSize = 34;
     _titleLabel.textColor = [UIColor whiteColor];
-    //_titleLabel.shadowColor = [UIColor blackColor];
-    //_titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    _titleLabel.text = (NSString *)[item objectForKey:@"title"];
+    _titleLabel.text = currentTitle;
     _titleLabel.transform = CGAffineTransformMakeRotation(degreesToRadians(90));
     _titleLabel.frame = CGRectMake(260,1,55,145);
     _titleLabel.textAlignment = UITextAlignmentCenter;
-    //_titleLabel.layer.borderColor = [UIColor redColor].CGColor;
-	//_titleLabel.layer.borderWidth = 1.0f;
     [_view addSubview:_titleLabel];
-
-		//[item objectForKey:@"content"];
     
     _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(15,1,250,145)];
     _contentLabel.textAlignment = UITextAlignmentLeft;
@@ -186,11 +194,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     _contentLabel.minimumFontSize = 10.0;
     _contentLabel.numberOfLines = 0;
     _contentLabel.textColor = [UIColor whiteColor];
-    //_contentLabel.shadowColor = [UIColor blackColor];
-    //_contentLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    _contentLabel.text = (NSString *)[item objectForKey:@"content"];
-    //_contentLabel.layer.borderColor = [UIColor redColor].CGColor;
-	//_contentLabel.layer.borderWidth = 1.0f;
+    _contentLabel.text = currentContent;
     [_view addSubview:_contentLabel];
     
     _btn = [UIButton buttonWithType:UIButtonTypeCustom];
