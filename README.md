@@ -21,4 +21,12 @@ Also, make sure you set your theos path and device ip before trying to install:
 	$ export THEOS=/opt/theos
 	$ export THEOS_DEVICE_IP=192.168.1.1
 	
+Just getting NCBrotips on your iPhone
+-------------
+
+If you don't want to build NCBrotips you can get the latest stable binary release from my cydia repo. 
+Just add the following line to your package sources:
+
+	http://repo.sdgears.info
+	
 	
