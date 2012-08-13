@@ -64,20 +64,15 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 }
 
 - (void)parserDidStartDocument:(NSXMLParser *)parser {
-	NSLog(@"Started parsing brotips!");
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-	NSString * errorString = [NSString stringWithFormat:@"Unable to get the latest tips! :/", [parseError code]];
-	NSLog(@"error parsing XML: %@", errorString);
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
-	//NSLog(@"found this element: %@", elementName);
 	currentElement = [elementName copy];
 
 	if ([elementName isEqualToString:@"entry"]) {
-		// clear out our story item caches...
 		item = [[NSMutableDictionary alloc] init];
 		currentTitle = [[NSMutableString alloc] init];
 		currentLink = [[NSMutableString alloc] init];
@@ -108,8 +103,6 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 		[[NSUserDefaults standardUserDefaults] setObject:item forKey:BROKEY];
 		
 		[parser abortParsing];
-		//[stories addObject:[item copy]];
-		NSLog(@"adding story: %@", currentTitle);
 	}
 }
 
@@ -163,35 +156,37 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[_view addSubview:_backgroundView];
 	
-	_backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(6,4,308,137)];
+	_backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(6.f,4.f,_view.frame.size.width - 12.f,_view.frame.size.height - 9.f)];
+	_backgroundLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _backgroundLabel.textAlignment = UITextAlignmentCenter;
-    _backgroundLabel.backgroundColor = (UIColor *)[colorArray objectAtIndex:([currentTitle intValue] % [colorArray count])];
-    _backgroundLabel.font = [UIFont boldSystemFontOfSize:70];
+    _backgroundLabel.backgroundColor = (UIColor *)[colorArray objectAtIndex:([[currentTitle substringWithRange:(NSRange){1,[currentTitle length] - 1}] intValue] % [colorArray count])];
+    _backgroundLabel.font = [UIFont boldSystemFontOfSize:70.f];
     _backgroundLabel.adjustsFontSizeToFitWidth = YES;
-    _backgroundLabel.minimumFontSize = 10.0;
+    _backgroundLabel.minimumFontSize = 10.f;
     _backgroundLabel.numberOfLines = 0;
     _backgroundLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:.3];
     _backgroundLabel.text = @"Brotips";
     [_view addSubview:_backgroundLabel];
     
     _titleLabel = [[UILabel alloc] init];
-    _titleLabel.backgroundColor = [UIColor clearColor]; //[UIColor clearColor]
-    _titleLabel.font = [UIFont boldSystemFontOfSize:44];
+    _titleLabel.backgroundColor = [UIColor clearColor];
+    _titleLabel.font = [UIFont boldSystemFontOfSize:44.f];
     _titleLabel.adjustsFontSizeToFitWidth = YES;
-    _titleLabel.minimumFontSize = 34;
+    _titleLabel.minimumFontSize = 34.f;
     _titleLabel.textColor = [UIColor whiteColor];
     _titleLabel.text = currentTitle;
     _titleLabel.transform = CGAffineTransformMakeRotation(degreesToRadians(90));
-    _titleLabel.frame = CGRectMake(260,1,55,145);
+    _titleLabel.frame = CGRectMake(_view.frame.size.width - 56.f,1.f,55.f,145.f);
+    _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     _titleLabel.textAlignment = UITextAlignmentCenter;
     [_view addSubview:_titleLabel];
     
-    _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(15,1,250,145)];
+    _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.f,1.f,250.f,145.f)];
     _contentLabel.textAlignment = UITextAlignmentLeft;
-    _contentLabel.backgroundColor = [UIColor clearColor]; //[UIColor clearColor]
-    _contentLabel.font = [UIFont boldSystemFontOfSize:20];
+    _contentLabel.backgroundColor = [UIColor clearColor];
+    _contentLabel.font = [UIFont boldSystemFontOfSize:20.f];
     _contentLabel.adjustsFontSizeToFitWidth = YES;
-    _contentLabel.minimumFontSize = 10.0;
+    _contentLabel.minimumFontSize = 10.f;
     _contentLabel.numberOfLines = 0;
     _contentLabel.textColor = [UIColor whiteColor];
     _contentLabel.text = currentContent;
