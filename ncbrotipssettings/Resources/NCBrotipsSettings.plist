@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>What kind of tip you want, bro?</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.mindw0rk.ncbrotips</string>
+			<key>key</key>
+			<string>BrotipSource</string>
+			<key>label</key>
+			<string>Brotip Source</string>
+			<key>validValues</key>
+			<array>
+				<string>Recent</string>
+				<string>Popular</string>
+				<string>Random</string>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>Recent</string>
+				<string>Popular</string>
+				<string>Random</string>
+			</array>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>NCBrotips</string>
+</dict>
+</plist>

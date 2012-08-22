@@ -1,10 +1,10 @@
 {
-    entry = {
-	bundle = WakeUpBabySettings;
-	cell = PSLinkCell;
-	detail = WakeUpBabySettingsListController;
-	icon = WakeUpBabySettings.png;
-	isController = 1;
-	label = WakeUpBabySettings;
-    };
+	entry = {
+		bundle = NCBrotipsSettings;
+		cell = PSLinkCell;
+		detail = "NCBrotipsSettingsListController";
+		icon = "NCBrotipsSettings.png";
+		isController = 1;
+		label = NCBrotips;
+	};
 }

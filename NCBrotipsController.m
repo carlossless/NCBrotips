@@ -2,8 +2,18 @@
 #import "BBWeeAppController-Protocol.h"
 
 #define degreesToRadians(degrees) (M_PI * degrees / 180.0)
-#define BROKEY @"brotip"
 #define dc2fc(color) (color / 255.f)
+
+#define BROKEY @"brotip"
+
+#define SETTINGS @"BrotipSource"
+#define RECENT @"Recent"
+#define POPULAR @"Popular"
+#define RANDOM @"Random"
+
+#define POPULAR_URL @"http://www.brotips.com/popular.atom"
+#define RECENT_URL @"http://www.brotips.com/recent.atom"
+#define RANDOM_URL @"http://www.brotips.com/random.atom"
 
 static NSBundle *_NCBrotipsWeeAppBundle = nil;
 
@@ -44,23 +54,29 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 }
 
 - (void)loadFullView {
-	//you must then convert the path to a proper NSURL or it won't work
-	NSURL *xmlURL = [NSURL URLWithString:@"http://www.brotips.com/recent.atom"];
-
-	// here, for some reason you have to use NSClassFromString when trying to alloc NSXMLParser, otherwise you will get an object not found error
-	// this may be necessary only for the toolchain
+    NSString *sourceKey = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:SETTINGS];
+    NSString *urlString;
+    
+    NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:SETTINGS]);
+    
+    if ([sourceKey isEqualToString:POPULAR]) {
+        urlString = POPULAR_URL;
+    } else if ([sourceKey isEqualToString:RANDOM]) {
+        urlString = RANDOM_URL;
+    } else { //Everything else goes to recent
+        urlString = RECENT_URL;
+    }
+    
+	NSURL *xmlURL = [NSURL URLWithString:urlString];
+    
 	rssParser = [[NSXMLParser alloc] initWithContentsOfURL:xmlURL];
-
-	// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
 	[rssParser setDelegate:self];
 
-	// Depending on the XML document you're parsing, you may want to enable these features of NSXMLParser.
 	[rssParser setShouldProcessNamespaces:NO];
 	[rssParser setShouldReportNamespacePrefixes:NO];
 	[rssParser setShouldResolveExternalEntities:NO];
 
 	[rssParser parse];
-	// Add subviews to _backgroundView (or _view) here.
 }
 
 - (void)parserDidStartDocument:(NSXMLParser *)parser {
@@ -86,9 +102,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
 
-	//NSLog(@"ended element: %@", elementName);
 	if ([elementName isEqualToString:@"entry"]) {
-		// save values to an item, then store that item into the array...
 		currentTitle = [[currentTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
 		[currentTitle deleteCharactersInRange:NSMakeRange([currentTitle length]-1, 1)];
 		currentContent = [[[[[currentContent stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"] stringByReplacingOccurrencesOfString:@"\n\n" withString:@"\n"] stringByReplacingOccurrencesOfString:@"\n " withString:@"\n"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
@@ -107,8 +121,6 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
-	//NSLog(@"found characters: %@", string);
-	// save the characters for the current item...
 	if ([currentElement isEqualToString:@"title"]) {
 		[currentTitle appendString:string];
 	} else if ([currentElement isEqualToString:@"content"]) {
@@ -118,19 +130,10 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
 
-	//[activityIndicator stopAnimating];
-	//[activityIndicator removeFromSuperview];
-
-	NSLog(@"all done!");
-	//NSLog(@"stories array has %d items", [stories count]);
-	//[newsTable reloadData];
 }
 
 - (void)loadPlaceholderView {
-	// This should only be a placeholder - it should not connect to any servers or perform any intense
-	// data loading operations.
-	//
-	// All widgets are 316 points wide. Image size calculations match those of the Stocks widget.
+
 	_view = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {316.f, [self viewHeight]}}];
 	_view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	
@@ -207,8 +210,14 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 	_view = nil;
 	[_backgroundView release];
 	_backgroundView = nil;
-	
-	// Destroy any additional subviews you added here. Don't waste memory :(.
+    [_backgroundLabel release];
+//	_backgroundLabel = nil;
+//	[_titleLabel release];
+//	_titleLabel = nil;
+//    [_contentLabel release];
+//	_contentLabel = nil;
+//    [_btn release];
+//	_btn = nil;
 }
 
 - (float)viewHeight {
