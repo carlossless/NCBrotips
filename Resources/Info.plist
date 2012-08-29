@@ -31,5 +31,9 @@
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleIconFile</key>
+	<string>NCBrotips.png</string>
+	<key>PreferencesPlistName</key>
+	<string>Prefrences.plist</string>
 </dict>
 </plist>
