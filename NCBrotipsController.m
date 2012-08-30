@@ -20,15 +20,15 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 @interface NCBrotipsController: NSObject <BBWeeAppController, NSXMLParserDelegate> {
 	UIView *_view;
 	UIImageView *_backgroundView;
-	NSXMLParser * rssParser;
-	NSString *currentElement;
-	NSMutableString *currentTitle, *currentLink, *currentContent;
-	NSArray *colorArray;
-	
-	UILabel *_titleLabel;
+    UILabel *_titleLabel;
 	UILabel *_contentLabel;
 	UILabel *_backgroundLabel;
 	UIButton *_btn;
+    
+	NSXMLParser *rssParser;
+	NSString *currentElement;
+	NSMutableString *currentTitle, *currentLink, *currentContent;
+    NSArray *colorArray;
 }
 
 @property (nonatomic, retain) UIView *view;
@@ -54,6 +54,9 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 - (void)dealloc {
 	[_view release];
 	[_backgroundView release];
+    [_backgroundLabel release];
+    [_titleLabel release];
+    [_contentLabel release];
 	[super dealloc];
 }
 
@@ -167,23 +170,23 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     currentLink = [link mutableCopy];
     currentContent = [content mutableCopy];
     
-    colorArray = [NSArray arrayWithObjects:
-                  [UIColor colorWithRed:dc2fc(176) green:dc2fc(132) blue:dc2fc(133) alpha:1],	//Pink
-                  [UIColor colorWithRed:dc2fc(188) green:dc2fc(172) blue:dc2fc(153) alpha:1],	//Brown
-                  [UIColor colorWithRed:dc2fc(136) green:dc2fc(175) blue:dc2fc(131) alpha:1],	//Green
-                  [UIColor colorWithRed:dc2fc(132) green:dc2fc(173) blue:dc2fc(175) alpha:1],	//Blue
-                  [UIColor colorWithRed:dc2fc(81) green:dc2fc(116) blue:dc2fc(86) alpha:1],	//Dark Green
-                  [UIColor colorWithRed:dc2fc(116) green:dc2fc(131) blue:dc2fc(146) alpha:1],	//Purple
-                  [UIColor colorWithRed:dc2fc(140) green:dc2fc(107) blue:dc2fc(74) alpha:1],	//Dark Brown
-                  nil];
-    
     _titleLabel.text = title;
     _contentLabel.text = content;
     [_backgroundLabel setBackgroundColor:(UIColor *)[colorArray objectAtIndex:([[title substringWithRange:(NSRange){1,[title length] - 1}] intValue] % ([colorArray count]))]];
 }
 
 - (void)loadPlaceholderView {
-
+    
+    colorArray = [[NSArray arrayWithObjects:
+                   [UIColor colorWithRed:dc2fc(176) green:dc2fc(132) blue:dc2fc(133) alpha:1],	//Pink
+                   [UIColor colorWithRed:dc2fc(188) green:dc2fc(172) blue:dc2fc(153) alpha:1],	//Brown
+                   [UIColor colorWithRed:dc2fc(136) green:dc2fc(175) blue:dc2fc(131) alpha:1],	//Green
+                   [UIColor colorWithRed:dc2fc(132) green:dc2fc(173) blue:dc2fc(175) alpha:1],	//Blue
+                   [UIColor colorWithRed:dc2fc(81) green:dc2fc(116) blue:dc2fc(86) alpha:1],	//Dark Green
+                   [UIColor colorWithRed:dc2fc(116) green:dc2fc(131) blue:dc2fc(146) alpha:1],	//Purple
+                   [UIColor colorWithRed:dc2fc(140) green:dc2fc(107) blue:dc2fc(74) alpha:1],	//Dark Brown
+                   nil] retain];
+    
 	_view = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {316.f, [self viewHeight]}}];
 	_view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
@@ -200,7 +203,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     _backgroundLabel.font = [UIFont boldSystemFontOfSize:70.f];
     _backgroundLabel.adjustsFontSizeToFitWidth = YES;
     _backgroundLabel.minimumFontSize = 10.f;
-    _backgroundLabel.numberOfLines = 0;
+    _backgroundLabel.numberOfLines = 1;
     _backgroundLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:.3];
     _backgroundLabel.text = @"Brotips";
     [_view addSubview:_backgroundLabel];
@@ -247,6 +250,11 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
 	[_backgroundView release];
 	_backgroundView = nil;
     [_backgroundLabel release];
+    _backgroundLabel = nil;
+    [_titleLabel release];
+    _titleLabel = nil;
+    [_contentLabel release];
+    _contentLabel = nil;
 }
 
 - (float)viewHeight {
