@@ -57,6 +57,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     [_backgroundLabel release];
     [_titleLabel release];
     [_contentLabel release];
+    [colorArray release];
 	[super dealloc];
 }
 
@@ -255,6 +256,8 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     _titleLabel = nil;
     [_contentLabel release];
     _contentLabel = nil;
+    [colorArray release];
+    _colorArray = nil;
 }
 
 - (float)viewHeight {
