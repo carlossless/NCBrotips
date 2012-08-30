@@ -257,7 +257,7 @@ static NSBundle *_NCBrotipsWeeAppBundle = nil;
     [_contentLabel release];
     _contentLabel = nil;
     [colorArray release];
-    _colorArray = nil;
+    colorArray = nil;
 }
 
 - (float)viewHeight {
