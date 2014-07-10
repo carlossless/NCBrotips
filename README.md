@@ -1,6 +1,10 @@
 NCBrotips
 =========
 
+*NCBrotips is no longer supported and was never meant to be supported on future iOS releases, this repo acts only as a archive*.
+
+------------
+
 NCBrotips is an iPhone Notification Center widget that finds and retrieves the latest
 tip from http://brotips.com. It was made solely to test some simple widget capabilities
 on a jailbroken iPhone.
