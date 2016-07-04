@@ -9,7 +9,7 @@ NCBrotips is an iPhone Notification Center widget that finds and retrieves the l
 tip from http://brotips.com. It was made solely to test some simple widget capabilities
 on a jailbroken iPhone.
 
-![NCBrotips](http://mindw0rk.sdgears.info/~work/NCBrotips.png "NCBrotips")
+![NCBrotips](https://cloud.githubusercontent.com/assets/498906/16568255/ac2c258e-4230-11e6-851c-bb860abe94ce.png)
 
 Building NCBrotips
 -------------
